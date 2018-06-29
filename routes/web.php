@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('activate/{token}', 'ActivationTokenController@activate');
+Route::get('activate/{token}', 'ActivationTokenController@activate')->name('activation');
 
 Auth::routes();
 

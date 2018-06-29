@@ -11,11 +11,10 @@ class ActivationTokenController extends Controller
 {
     public function activate(ActivationToken $token)
     {
-    	$token->user->update(['active' => true]);
+    	
 
-    	Auth::login($token->user);
+    	$token->user->activate();
 
-    	$token->delete();
 
     	return redirect('home')->withInfo('Tu cuenta ha sido activada.');
     }

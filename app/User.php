@@ -2,8 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use App\ActivationToken;
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -26,4 +28,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function activate()
+    {
+        $this->update(['active' => true]);
+
+        Auth::login($this);
+
+        $this->token->delete();
+    }
+
+
+
+    public function token()
+    {
+        return $this->hasOne(ActivationToken::class);
+    }
+
+    public function generateToken()
+    {
+        $this->token()->create([            
+            'token' => str_random(60)
+        ]);
+
+        return $this;
+    }
+
 }
